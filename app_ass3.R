@@ -1,4 +1,6 @@
 source("building tables.R")
+rsconnect::writeManifest("app_ass3.R")
+getwd()
 # Earthy tones for Aboriginal children
 aboriginal_colors <- c(
   "NSW" = "#8B4513",  # SaddleBrown
