@@ -2,6 +2,7 @@
 library(shiny)
 library(tidyverse)
 library(rsconnect)
+
 #NPAC Table 1 - attendance total ybfs (PI 1)
 attend_total_raw <- readxl::read_xlsx("data/Preschool Attendance, 2024 Tables 1-3.xlsx", sheet = 2,  range = "A5:H50")
 attend_total_formatted <- attend_total_raw%>%
@@ -290,7 +291,7 @@ ui <- fluidPage(
   fluidRow(
     column(12,
            tags$h4("PI 1 – Percent of Children Enrolled That Were Attending", align = "center"),
-
+           
            selectInput("y_label", "Select Attendance Hours Y%:", 
                        choices = unique(PI1_table$y_label)),
            plotOutput("plot1", height = "300px"),
@@ -318,7 +319,7 @@ ui <- fluidPage(
            plotOutput("plot3.1", height = "300px"),
            tags$p(HTML( "<em>Source (count):</em> Preschool Education, 2024, Table 16<br>
                         <em>Source (population):</em> Census of Population and Housing, 2021 [TableBuilder]."))
- 
+           
     )
   ),
   
@@ -348,15 +349,15 @@ ui <- fluidPage(
                         <em>Source (population):</em> Census of Population and Housing, 2021 [TableBuilder]."
            ))
     )
-    ),
-      hr(),
-      tags$h3("References"),
-      tags$ul(
-        tags$li("Australian Bureau of Statistics (2021). State_seifa_ybfs [Census of Population and Housing, 2021, TableBuilder] accessed 13 June 2025."),
-        tags$li(HTML("Australian Bureau of Statistics. (2024). <em>Preschool Attendance</em>. ABS. <a href='https://www.abs.gov.au/statistics/people/education/preschool-attendance/latest-release' target='_blank'>https://www.abs.gov.au/statistics/people/education/preschool-attendance/latest-release</a>")),
-        tags$li(HTML("Australian Bureau of Statistics. (2024). <em>Preschool Education methodology</em>. ABS. <a href='https://www.abs.gov.au/methodologies/preschool-education-methodology/2024' target='_blank'>https://www.abs.gov.au/methodologies/preschool-education-methodology/2024</a>")),
-        tags$li(HTML("Australian Bureau of Statistics. (2024). <em>Preschool Education</em>. ABS.<a href='https://www.abs.gov.au/statistics/people/education/preschool-education/latest-release' target='_blank'>https://www.abs.gov.au/statistics/people/education/preschool-education/latest-release</a>")),
-        
+  ),
+  hr(),
+  tags$h3("References"),
+  tags$ul(
+    tags$li("Australian Bureau of Statistics (2021). State_seifa_ybfs [Census of Population and Housing, 2021, TableBuilder] accessed 13 June 2025."),
+    tags$li(HTML("Australian Bureau of Statistics. (2024). <em>Preschool Attendance</em>. ABS. <a href='https://www.abs.gov.au/statistics/people/education/preschool-attendance/latest-release' target='_blank'>https://www.abs.gov.au/statistics/people/education/preschool-attendance/latest-release</a>")),
+    tags$li(HTML("Australian Bureau of Statistics. (2024). <em>Preschool Education methodology</em>. ABS. <a href='https://www.abs.gov.au/methodologies/preschool-education-methodology/2024' target='_blank'>https://www.abs.gov.au/methodologies/preschool-education-methodology/2024</a>")),
+    tags$li(HTML("Australian Bureau of Statistics. (2024). <em>Preschool Education</em>. ABS.<a href='https://www.abs.gov.au/statistics/people/education/preschool-education/latest-release' target='_blank'>https://www.abs.gov.au/statistics/people/education/preschool-education/latest-release</a>")),
+    
   )
 )
 
@@ -368,7 +369,7 @@ server <- function(input, output, session) {
       filter(state %in% input$states, y_label == y_var) %>%
       mutate(y_value = (cummulative_n / (erp * (as.numeric(x_thresh)/100))*100),
              bar_label = paste0(round(y_value, 0),"%"))
-      
+    
     ggplot(df, aes(x = state, y = y_value, fill = state)) +
       geom_bar(stat = "identity") +
       geom_hline(yintercept = 100, linetype = "dotted", color = "black", linewidth = 0.8) +
@@ -377,8 +378,8 @@ server <- function(input, output, session) {
       coord_cartesian(ylim = c(0, 100)) +
       labs(title = paste(x_thresh,"% of", unique(df$population),"Children Attended Preschool Programs\n For At Least",
                          unique(df$at_least_hours),ifelse(unique(df$at_least_hours)!= 1, "Hours", "Hour")),
-        y = pop_label,
-        x = "State") +
+           y = pop_label,
+           x = "State") +
       theme_minimal() +
       theme(legend.position = "none")+
       scale_fill_manual(values = colour_scheme)
@@ -402,7 +403,7 @@ server <- function(input, output, session) {
       theme_minimal() +
       theme(legend.position = "none")+
       scale_fill_manual(values = colour_scheme)
-      
+    
   }
   
   output$plot1 <- renderPlot({
@@ -427,9 +428,9 @@ server <- function(input, output, session) {
 }
 
 shinyApp(ui = ui, server = server)
-
 rsconnect::writeManifest(
   appDir = getwd(),
-  appFiles = c("app.R"),
+  appFiles = "app.R",
   appPrimaryDoc = "app.R"
 )
+
