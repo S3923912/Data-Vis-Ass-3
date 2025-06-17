@@ -1,6 +1,7 @@
 # data to build the tables
 library(shiny)
 library(tidyverse)
+library(rsconnect)
 #NPAC Table 1 - attendance total ybfs (PI 1)
 attend_total_raw <- readxl::read_xlsx("data/Preschool Attendance, 2024 Tables 1-3.xlsx", sheet = 2,  range = "A5:H50")
 attend_total_formatted <- attend_total_raw%>%
@@ -238,4 +239,5 @@ enrolment_table <- rbind(enrol_total_pop, PI2.1_table,PI3.1_table)
 
 #attendance_table 
 attendance_table <- rbind(attend_total_pop, PI2.2_table, PI3.2_table)
+
 

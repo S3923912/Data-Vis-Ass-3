@@ -194,3 +194,8 @@ server <- function(input, output, session) {
 
 shinyApp(ui = ui, server = server)
 
+rsconnect::writeManifest(
+  appDir = getwd(),
+  appFiles = c("app_ass3.R", "building tables.R"),
+  appPrimaryDoc = "app_ass3.R"
+)
